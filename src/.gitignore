@@ -1,0 +1,39 @@
+# === Maven / Java ===
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+*.log
+*.out
+
+# === IDEs ===
+# IntelliJ
+.idea/
+*.iml
+# Eclipse
+.project
+.classpath
+.settings/
+# VS Code
+.vscode/
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Node (por si hay scripts o front) ===
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+# === Docker (si agregas) ===
+*.env
+.env.local
+.env.*.local
+
+# === Misc ===
+# H2 es in-memory en este proyecto; si cambias a file, ignora el archivo .mv.db aquí
+*.mv.db
