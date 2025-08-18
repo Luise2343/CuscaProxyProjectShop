@@ -38,24 +38,18 @@ public class SecurityConfig {
         return http
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .headers(h -> h.frameOptions(f -> f.sameOrigin()))
             .authorizeHttpRequests(auth -> auth
-                // Swagger / OpenAPI (todo lo bajo de /v3 + UI)
-                .requestMatchers("/v3/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger").permitAll()
-                // Login público (ambos prefijos por si cambiaste)
+                .requestMatchers("/v3/api-docs", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/swagger").permitAll()
                 .requestMatchers("/auth/**", "/api/auth/**").permitAll()
-                // H2 console
-                .requestMatchers("/h2-console/**").permitAll()
-                // Products GET públicos
+                .requestMatchers("/h2/**", "/h2-console/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                // Resto protegido
                 .anyRequest().authenticated()
             )
-            .headers(h -> h.frameOptions(f -> f.disable()))
             .exceptionHandling(e -> e
-                .authenticationEntryPoint((req, res, ex) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-                .accessDeniedHandler((req, res, ex) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .authenticationEntryPoint((req, res, ex) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED)) // 401 solo si NO hay auth
+                .accessDeniedHandler((req, res, ex) -> res.sendError(HttpServletResponse.SC_FORBIDDEN))         // 403 si hay auth pero falta permiso
             )
-            // Filtro JWT (no devuelve 401 para rutas públicas ni cuando no hay token)
             .addFilterBefore(new JwtAuthFilter(jwt), UsernamePasswordAuthenticationFilter.class)
             .build();
     }

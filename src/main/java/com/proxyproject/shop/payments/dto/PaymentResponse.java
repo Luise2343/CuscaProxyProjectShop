@@ -3,34 +3,35 @@ package com.proxyproject.shop.payments.dto;
 import java.math.BigDecimal;
 
 public class PaymentResponse {
-    private String status;        // PAID / ALREADY_PAID
-    private Long orderId;
-    private String transactionId; // null si already paid
-    private String method;        // CREDIT_CARD / PAYPAL / CRYPTO
+    private String status;
+    private String transactionId;
+    private String method;
     private String message;
     private BigDecimal amount;
 
-    public PaymentResponse(String status, Long orderId, String transactionId, String method, String message, BigDecimal amount) {
+    public PaymentResponse() {
+    }
+
+    public PaymentResponse(String status, String transactionId, String method, String message, BigDecimal amount) {
         this.status = status;
-        this.orderId = orderId;
         this.transactionId = transactionId;
         this.method = method;
         this.message = message;
         this.amount = amount;
     }
 
-    public static PaymentResponse paid(Long orderId, String txId, String method, String message, BigDecimal amount) {
-        return new PaymentResponse("PAID", orderId, txId, method, message, amount);
-    }
-
-    public static PaymentResponse alreadyPaid(Long orderId) {
-        return new PaymentResponse("ALREADY_PAID", orderId, null, null, "Order is already PAID", null);
-    }
-
     public String getStatus() { return status; }
-    public Long getOrderId() { return orderId; }
+    public void setStatus(String status) { this.status = status; }
+
     public String getTransactionId() { return transactionId; }
+    public void setTransactionId(String transactionId) { this.transactionId = transactionId; }
+
     public String getMethod() { return method; }
+    public void setMethod(String method) { this.method = method; }
+
     public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
+
     public BigDecimal getAmount() { return amount; }
+    public void setAmount(BigDecimal amount) { this.amount = amount; }
 }
